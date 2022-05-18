@@ -2,6 +2,8 @@
 
 # Base setup
 
+## Dependencies
+
 Това са необходимите базови депендънсита:
 
 ```XML
@@ -43,7 +45,7 @@
 </dependency>
 ```
 
-
+## Anotations
 
 За да вдигне Спринг:  
 ```@ExtendWith(SpringExtension.class)```
@@ -89,9 +91,9 @@ public void givenHomePageURI_whenMockMVC_thenReturnsIndexJSPViewName() {
 }
 ```
 
-`perform()` - извиква GET метод, който връща `ResultActions`, където можем да сравним с очкваното съдържание (body), хедър или HTTP статус (200, 404...).
-`andDo(print())` - принти request-a и respons-a за да проследиш какво се случва.
-`andExpect` - сравнява полученото с очакваното.
+`perform()` - извиква GET метод, който връща `ResultActions`, където можем да сравним с очкваното съдържание (body), хедър или HTTP статус (200, 404...);  
+`andDo(print())` - принти request-a и respons-a за да проследиш какво се случва;  
+`andExpect` - сравнява полученото с очакваното;  
 
 
 ## Проверяваме съдържанието на respons-a (body)
@@ -119,6 +121,42 @@ public void givenGreetURI_whenMockMVC_thenVerifyResponse() {
       mvcResult.getResponse().getContentType());
 }
 ```
+
+`perform(get("/greet"))` - извиква GET метод;  
+`andDo(print()).andExpect(status().isOk())` - потвърждава, че контролерът връща статус 200 (ОК);  
+`andExpect(jsonPath("$.message").value("Hello World!!!"))` - потвърждава, че съдържанието на respons-a e "Hello World!!!";  
+`andReturn()` - връща MvcResult обект, който се използва когато проверяваме нещо, което не е достъпно директно. В конкретния случай присвоява стойност на mvcResult променливата от тип MvcResult за да можем чрез `assertEquals` да верифицираме Content Type;  
+
+## Проверяваме съдържанието на respons-a (body) с Path Variable
+
+Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPathVariable/John` и там трябва да получим отговор:  
+```JSON
+{
+    "id": 1,
+    "message": "Hello World John!!!"
+}
+```
+
+```JAVA
+@Test
+public void givenGreetURIWithPathVariable_whenMockMVC_thenResponseOK() {
+    this.mockMvc
+      .perform(get("/greetWithPathVariable/{name}", "John"))
+      .andDo(print()).andExpect(status().isOk())
+      
+      .andExpect(content().contentType("application/json;charset=UTF-8"))
+      .andExpect(jsonPath("$.message").value("Hello World John!!!"));
+}
+```
+
+`perform(get("/greetWithPathVariable/{name}", "John"))` - извиква GET метод с параметър;  
+
+
+
+
+
+
+
 
   
 
