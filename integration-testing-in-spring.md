@@ -96,6 +96,7 @@ public void givenHomePageURI_whenMockMVC_thenReturnsIndexJSPViewName() {
 `andExpect` - сравнява полученото с очакваното;  
 
 
+
 ## Проверяваме съдържанието на respons-a (body)
 
 Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greet` и там трябва да получим отговор:
@@ -127,9 +128,12 @@ public void givenGreetURI_whenMockMVC_thenVerifyResponse() {
 `andExpect(jsonPath("$.message").value("Hello World!!!"))` - потвърждава, че съдържанието на respons-a e "Hello World!!!";  
 `andReturn()` - връща MvcResult обект, който се използва когато проверяваме нещо, което не е достъпно директно. В конкретния случай присвоява стойност на mvcResult променливата от тип MvcResult за да можем чрез `assertEquals` да верифицираме Content Type;  
 
+
+
 ## Проверяваме съдържанието на respons-a (body) с Path Variable
 
 Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPathVariable/John` и там трябва да получим отговор:  
+
 ```JSON
 {
     "id": 1,
@@ -149,14 +153,90 @@ public void givenGreetURIWithPathVariable_whenMockMVC_thenResponseOK() {
 }
 ```
 
-`perform(get("/greetWithPathVariable/{name}", "John"))` - извиква GET метод с параметър;  
+`perform(get("/greetWithPathVariable/{name}", "John"))` - извиква GET метод с path variable;  
 
 
 
+## Проверяваме съдържанието на respons-a (body) с Query Parameters
+
+Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithQueryVariable?name=John%20Doe` и там трябва да получим отговор:  
+
+```JSON
+{
+    "id": 1,
+    "message": "Hello World John Doe!!!"
+}
+```
+
+```JAVA
+@Test
+public void givenGreetURIWithQueryParameter_whenMockMVC_thenResponseOK() {
+    this.mockMvc.perform(get("/greetWithQueryVariable")
+      .param("name", "John Doe")).andDo(print()).andExpect(status().isOk())
+      .andExpect(content().contentType("application/json;charset=UTF-8"))
+      .andExpect(jsonPath("$.message").value("Hello World John Doe!!!"));
+}
+```
+
+`param("name", "John Doe")).andDo(print()).andExpect(status().isOk())` - извиква GET метод с query parameters;  
+Може да бъде направено и така:  
+`this.mockMvc.perform(get("/greetWithQueryVariable?name={name}", "John Doe"));`  
 
 
 
+## Проверяваме съдържанието на respons-a с Post request.
 
+Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPost` и там трябва да получим отговор:  
+
+```JSON
+{
+    "id": 1,
+    "message": "Hello World!!!"
+}
+```
+
+```JAVA
+@Test
+public void givenGreetURIWithPost_whenMockMVC_thenVerifyResponse() {
+    this.mockMvc.perform(post("/greetWithPost")).andDo(print())
+      .andExpect(status().isOk()).andExpect(content()
+      .contentType("application/json;charset=UTF-8"))
+      .andExpect(jsonPath("$.message").value("Hello World!!!"));
+}
+```
+
+`this.mockMvc.perform(post("/greetWithPost")).andDo(print())` - изпраща post request, останалите неща са същите;  
+
+
+
+## Тестване на form (формуляр).  
+Може да се прави само с `param()` метод.  
+
+Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPostAndFormData`:  
+Трябва да изпратим `id=1;name=John%20Doe`  
+Очакваме да получим:  
+
+
+```JSON
+{
+    "id": 1,
+    "message": "Hello World John Doe!!!"
+}
+```
+
+
+```JAVA
+@Test
+public void givenGreetURI_whenMockMVC_thenVerifyResponse() throws Exception {
+    MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get("/greet"))
+      .andDo(print())
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Hello World!!!"))
+      .andReturn();
+ 
+   assertEquals("application/json;charset=UTF-8", mvcResult.getResponse().getContentType());
+}
+```
 
   
 
