@@ -1,4 +1,4 @@
-[Integration tests for MVC - Source](https://www.baeldung.com/integration-testing-in-spring)
+Source: [Integration tests for MVC](https://www.baeldung.com/integration-testing-in-spring)
 
 # Base setup
 
@@ -45,7 +45,7 @@
 </dependency>
 ```
 
-## Anotations
+## Annotations
 
 За да вдигне Спринг:  
 ```@ExtendWith(SpringExtension.class)```
@@ -58,12 +58,13 @@
 Може да се ползва и с XML конфигуриране:  
 `@ContextConfiguration(locations={""})`
 
-За да зареди web application context.  
+За да зареди *web application context*.  
 WebApplicationContext Object зареждеа всички бийнове и контролери в контекста.
 Дефолтния път e `src/main/webapp`. Можеш да го презапишеш с:  
 `@WebAppConfiguration(value = "")`
 
-MockMvc енкапсулира всички web application бийнове и ги прави достъпни за тестване. Зареждаш го еднокартно за целия клас с:  
+MockMvc енкапсулира всички web application бийнове и ги прави достъпни за тестване.  
+Зареждаш го еднокартно за целия клас с:  
 ```JAVA
 private MockMvc mockMvc;
 @BeforeEach
@@ -79,7 +80,7 @@ public void setup() throws Exception {
 
 ## Проверяваме името на view-то
 
-Енд пойнт `http://localhost:8080/spring-mvc-test/homePage` и там трябва да има view "index":  
+Енд пойнт `http://localhost:8080/spring-mvc-test/homePage` и там трябва да има view `index`:  
 
 ```JAVA
 @Test
