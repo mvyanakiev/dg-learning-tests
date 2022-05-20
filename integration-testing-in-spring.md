@@ -79,7 +79,7 @@ public void setup() throws Exception {
 
 ## Проверяваме името на view-то
 
-Имаме енд пойнт `http://localhost:8080/spring-mvc-test/homePage` и там трябва да има view "index":  
+Енд пойнт `http://localhost:8080/spring-mvc-test/homePage` и там трябва да има view "index":  
 
 ```JAVA
 @Test
@@ -99,7 +99,7 @@ public void givenHomePageURI_whenMockMVC_thenReturnsIndexJSPViewName() {
 
 ## Проверяваме съдържанието на respons-a (body)
 
-Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greet` и там трябва да получим отговор:
+Енд пойнт `http://localhost:8080/spring-mvc-test/greet` и там трябва да получим отговор:
 
 ```JSON
 {
@@ -132,7 +132,7 @@ public void givenGreetURI_whenMockMVC_thenVerifyResponse() {
 
 ## Проверяваме съдържанието на respons-a (body) с Path Variable
 
-Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPathVariable/John` и там трябва да получим отговор:  
+Енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPathVariable/John` и там трябва да получим отговор:  
 
 ```JSON
 {
@@ -159,7 +159,7 @@ public void givenGreetURIWithPathVariable_whenMockMVC_thenResponseOK() {
 
 ## Проверяваме съдържанието на respons-a (body) с Query Parameters
 
-Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithQueryVariable?name=John%20Doe` и там трябва да получим отговор:  
+Енд пойнт `http://localhost:8080/spring-mvc-test/greetWithQueryVariable?name=John%20Doe` и там трябва да получим отговор:  
 
 ```JSON
 {
@@ -186,7 +186,7 @@ public void givenGreetURIWithQueryParameter_whenMockMVC_thenResponseOK() {
 
 ## Проверяваме съдържанието на respons-a с Post request.
 
-Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPost` и там трябва да получим отговор:  
+Енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPost` и там трябва да получим отговор:  
 
 ```JSON
 {
@@ -209,11 +209,11 @@ public void givenGreetURIWithPost_whenMockMVC_thenVerifyResponse() {
 
 
 
-## Тестване на form (формуляр).  
+## Тестване на формуляр (form).  
 Може да се прави само с `param()` метод.  
 
-Имаме енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPostAndFormData`:  
-Трябва да изпратим `id=1;name=John%20Doe`  
+Енд пойнт `http://localhost:8080/spring-mvc-test/greetWithPostAndFormData`:  
+Трябва да изпратим `id=1`, `name=John%20Doe`  
 Очакваме да получим:  
 
 
@@ -238,10 +238,9 @@ public void givenGreetURI_whenMockMVC_thenVerifyResponse() throws Exception {
 }
 ```
 
-  
+---
 
+# Ограничения
 
-
-
-
-
+Не се използва реална мрежова свързаност и следователно не може да се тества пълния network stack.  
+Не се поддържат всички възможности на реално Спринг приложение (защото са мок-нати request-a и respons-а, и контекста не е реалния). Например няма HTTP redirections.  
